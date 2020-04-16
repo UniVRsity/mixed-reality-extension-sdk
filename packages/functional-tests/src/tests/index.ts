@@ -26,6 +26,7 @@ import LibraryFailTest from './library-fail-test';
 import LightTest from './light-test';
 import LookAtTest from './look-at-test';
 import PhysicsSimTest from './physics-sim-test';
+import PhysicsSimTestBounce from './physics-sim-test-h1';
 import PrimitivesTest from './primitives-test';
 import PromptTest from './prompt-test';
 import ReparentTest from './reparent-test';
@@ -66,6 +67,7 @@ export const Factories = {
 	'library-fail': (...args) => new LibraryFailTest(...args),
 	'light': (...args) => new LightTest(...args),
 	'look-at': (...args) => new LookAtTest(...args),
+	'physics-h1': (...args) => new PhysicsSimTestBounce(...args),
 	'physics-sim': (...args) => new PhysicsSimTest(...args),
 	'primitives': (...args) => new PrimitivesTest(...args),
 	'prompt': (...args) => new PromptTest(...args),
