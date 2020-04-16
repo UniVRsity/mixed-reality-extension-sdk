@@ -41,7 +41,7 @@ export default class PhysicsSimTest extends Test {
 		this.createCounterPlane(root, 2, 1.25);
 
 		this.createPegField(root, 2, 1);
-		this.interval = setInterval(() => this.spawnBall(root, 1.5, 1.5), 1000);
+		this.interval = setInterval(() => this.spawnBall(root, 1.5, 1.5), 10000);
 
 		await this.stoppedAsync();
 		return true;
@@ -115,19 +115,19 @@ export default class PhysicsSimTest extends Test {
 					collider: { geometry: { shape: MRE.ColliderType.Auto } }
 				}
 			});
-			peg.collider.onCollision('collision-enter', () => {
-				this.collRefCount.set(peg.id, (this.collRefCount.get(peg.id) ?? 0) + 1);
-				if (this.collRefCount.get(peg.id) > 0) {
-					peg.appearance.material = this.collisionPegMat;
-				}
-			});
+			//peg.collider.onCollision('collision-enter', () => {
+			//	this.collRefCount.set(peg.id, (this.collRefCount.get(peg.id) ?? 0) + 1);
+			//	if (this.collRefCount.get(peg.id) > 0) {
+			//		peg.appearance.material = this.collisionPegMat;
+			//	}
+			//});
 
-			peg.collider.onCollision('collision-exit', () => {
-				this.collRefCount.set(peg.id, this.collRefCount.get(peg.id) - 1);
-				if (this.collRefCount.get(peg.id) === 0) {
-					peg.appearance.material = this.defaultPegMat;
-				}
-			});
+			//peg.collider.onCollision('collision-exit', () => {
+			//	this.collRefCount.set(peg.id, this.collRefCount.get(peg.id) - 1);
+			//	if (this.collRefCount.get(peg.id) === 0) {
+			//		peg.appearance.material = this.defaultPegMat;
+			//	}
+			//});
 
 			peg.setBehavior(MRE.ButtonBehavior).onClick(() => {
 				peg.collider.enabled = false;
@@ -157,6 +157,7 @@ export default class PhysicsSimTest extends Test {
 				},
 				rigidBody: {
 					mass: 3,
+					//constraints: [MRE.RigidBodyConstraints.None]
 					constraints: [MRE.RigidBodyConstraints.FreezePositionZ]
 				},
 				collider: { geometry: { shape: MRE.ColliderType.Auto } }
