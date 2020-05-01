@@ -81,12 +81,11 @@ npm install -g openode
 ```
 cd YOUR_PROJECT_DIRECTORY
 ```
-
-4. If needed, create a Dockerfile using the openode CLI (only needs to be done once per project):
+4. Use the Dockerfile that comes with any of the sample MRE projects. A second option is you can create a Dockerfile using the openode CLI (only needs to be done once per project):
 ```
 openode template
 ```
-This creates a file on disk named `Dockerfile`
+This creates a file on disk named `Dockerfile`. Make sure you change where it says  WORKDIR /opt/app to WORKDIR /opt/mre or it will not be able to find /opt/app as a module. 
 
 5. Edit the Dockerfile
 The Node version specified in the Dockerfile is newer than the MRE SDK's Node depencency. To eliminate
@@ -94,21 +93,12 @@ potential incompatibility, edit the first line of the Dockerfile so that it spec
 ```
 FROM node:8.12.0-alpine
 ```
-Your app can be bundled with static files located in the `public` folder. These files include glTF
-models, audio resources, etc. For the app to be able to serve these files to the client, it needs to
-know the URL where it is running. The best way to get this URL is to first deploy to your instance
-*without* this setting in your Dockerfile, then come back, add the setting, and redeploy. Deploying
-is described in the next step.
+You must add the ENV BASE_URL= http://YOUR_SITE_NAME.openode.io/ line before you deploy or it won't be able to build. You can find your site name on the openode website. You also must add the the ENV PORT=80 as it is not included in the samples Dockerfile though it is included in the one that is generated when you type openode template. 
 
-After your app deploys you will see a message that looks like this:
-```js
-[ { result: 'success',
-    URL: 'http://YOUR_SITE_NAME.fr.openode.io/' } ]
-```
-
-Copy the `URL` value, edit your Dockerfile and add this line just below the line that reads `ENV PORT=80`:
-```
-ENV BASE_URL=http://YOUR_SITE_NAME.fr.openode.io
+So add lines: 
+ENV PORT=80 
+ENV BASE_URL=http://YOUR_SITE_NAME.openode.io/
+after the WORKDIR /opt/mre line to your Dockerfile before you deploy. 
 ```
 
 Save and close the Dockerfile.
@@ -131,8 +121,12 @@ gyp ERR! stack Error: Can't find Python executable "python", you can set the PYT
 If you see this error, run `openode deploy` one more time and it should clear up. If you see this
 error again, please [open a GitHub issue here](https://github.com/Microsoft/mixed-reality-extension-sdk/issues/new).
 
-Once your deployment succeeds, you're ready to connect from AltspaceVR! For instructions
-on instantiating your app within AltspaceVR, checkout the [sample repo's README.md](
+Once your deployment succeeds, you're ready to connect from AltspaceVR! 
+
+Open the AltspaceVR app, go to your world editor, press basics, then press SDK apps, then type wss://YOUR_SITE_NAME.openode.io/.
+Note you must use wss:// or it will not connect. It should display after this. 
+
+For instructions on instantiating your app within AltspaceVR, checkout the [sample repo's README.md](
 https://github.com/Microsoft/mixed-reality-extension-sdk-samples/blob/master/README.md)
 
 If you want to re-deploy, you should use `openode stop` before calling `openode deploy`, otherwise the deploy will 
